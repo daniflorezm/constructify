@@ -1,18 +1,31 @@
 {
   "name": "constructify-express",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "build": "tsc",
+    "start": "node dist/app.js",
+    "dev": "ts-node-dev src/app.ts",
+    "migrate:latest": "knex migrate:latest --knexfile src/knex/knexdatabaseconfiguration.ts",
+    "migrate:rollback": "knex migrate:rollback --knexfile src/knex/knexdatabaseconfiguration.ts",
+    "migrate:create": "knex migrate:create --knexfile src/knex/knexdatabaseconfiguration.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "exceljs": "^4.4.0",
     "express": "^4.21.2",
     "knex": "^3.1.0",
+    "path": "^0.12.7",
     "sqlite3": "^5.1.7"
+  },
+  "devDependencies": {
+    "@types/express": "^5.0.0",
+    "@types/node": "^22.10.2",
+    "ts-node": "^10.9.2",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.7.2"
   }
 }
