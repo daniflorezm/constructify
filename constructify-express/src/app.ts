@@ -1,14 +1,14 @@
 import express, { json } from "express";
+import cors from "cors";
 import api from "./routes/routes";
 
-// Si el export de KnexDatabaseConfiguration sigue siendo por default, 
-// basta con quitar la extensión .js y TypeScript lo leerá del .ts
 
 
 const PORT = process.env.PORT || 3001;
 const app = express();
 
 app.use(json());
+app.use(cors());
 app.use('/api', api)
 
 

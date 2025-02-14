@@ -2,8 +2,13 @@
   display: flex;
   flex-direction: column;
 }
+.bill-form-component-previous-button{
+  display: flex;
+  justify-content: space-between;
+}
 
 .bill-form-component-button {
   display: flex;
   justify-content: center;
+  gap: 15px;
 }

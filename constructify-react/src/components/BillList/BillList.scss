@@ -1,6 +1,6 @@
 .bill-list-component {
   margin: auto;
-  width: 80%;
+  width: 90%;
 }
 .bill-list-header {
   display: flex;
@@ -10,4 +10,10 @@
 }
 .bill-list-content {
   text-align: center;
+}
+.bill-list-operations-buttons{
+  display: flex;
+  justify-content: end;
+  padding-bottom: 15px;
+  gap: 15px;
 }
