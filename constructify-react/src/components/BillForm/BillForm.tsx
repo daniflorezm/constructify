@@ -1,21 +1,19 @@
 import { useState, useEffect } from "react";
-import { Collapse, Divider, Button, Typography } from "antd";
-import {
-  LeftCircleFilled
-} from "@ant-design/icons";
+import { Collapse, Divider, Button, Typography, Spin } from "antd";
+import { LeftCircleFilled } from "@ant-design/icons";
 import { CustomerDetails, PaymentDetails, ConceptDetails } from "./index";
 import { useBill } from "../../hooks/useBill";
 import "./BillForm.scss";
 export const BillForm = (props: any) => {
-  const {Title} = Typography;
+  const { Title } = Typography;
   const [expandCollapse, setExpandCollapse] = useState<string | string[]>([]);
-  const [billTitle, setBillTitle] = useState<string>("")
+  const [billTitle, setBillTitle] = useState<string>("");
   const { billFilled, returnToBillList } = props;
-  const { createBill } = useBill();
+  const { createBill, loading } = useBill();
   useEffect(() => {
     if (Object.keys(billFilled).length > 0) {
       setExpandCollapse(expandCollapse.length ? [] : ["1", "2", "3"]);
-      setBillTitle(`FACTURA ${billFilled.bill[0].id}`)
+      setBillTitle(`FACTURA ${billFilled.bill[0].id}`);
     }
   }, [billFilled]);
 
@@ -24,13 +22,19 @@ export const BillForm = (props: any) => {
       <div className="bill-form-component-previous-button">
         <Button
           type="link"
-          style={{ justifyContent: "flex-start", marginTop:15 }}
+          style={{ justifyContent: "flex-start", marginTop: 15 }}
           onClick={() => returnToBillList()}
           icon={<LeftCircleFilled />}
         >
           Lista de facturas
         </Button>
-        {billTitle.length > 0 ? (<Title level={3} italic underline>{billTitle}</Title>): ""}
+        {billTitle.length > 0 ? (
+          <Title level={3} italic underline>
+            {billTitle}
+          </Title>
+        ) : (
+          ""
+        )}
       </div>
       <Divider orientation="left">Datos del cliente</Divider>
       <Collapse
@@ -76,23 +80,30 @@ export const BillForm = (props: any) => {
         onChange={setExpandCollapse}
         activeKey={expandCollapse}
       />
-      <Divider orientation="left">Generación de factura</Divider>
+      <Divider orientation="left">
+        Generación de factura &nbsp;
+        {loading && <Spin size="small" />}
+      </Divider>
+
       <div className="bill-form-component-button">
         <Button
           type="primary"
           onClick={() => createBill("MAIN")}
+          disabled={loading}
         >
           CREAR FACTURA PARA MARI SAN OBRAS Y SERVICIOS
         </Button>
         <Button
           type="primary"
           onClick={() => createBill("AUTONOMO")}
+          disabled={loading}
         >
           CREAR FACTURA PARA ELVER AUGUSTO
         </Button>
         <Button
           type="primary"
           onClick={() => createBill("PLANTILLA")}
+          disabled={loading}
         >
           CREAR PLANTILLA
         </Button>

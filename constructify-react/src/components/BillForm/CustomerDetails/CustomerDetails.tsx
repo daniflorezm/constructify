@@ -27,7 +27,7 @@ export const CustomerDetails = (props:any) => {
   }, [billFilled])
   
   const handleValuesChange = (
-    changedValues: Partial<CustomerDetails>,
+    _: Partial<CustomerDetails>,
     allValues: CustomerDetails
   ) => {
     updateCustomerDetails(allValues);

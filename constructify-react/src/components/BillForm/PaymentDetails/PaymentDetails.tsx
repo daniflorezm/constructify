@@ -7,7 +7,8 @@ interface PaymentDetails {
   account_number: string,
   bank: string
 }
-export const PaymentDetails = (props) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const PaymentDetails = (props: any) => {
   const {billFilled} = props;
   const [form] = Form.useForm();
   const {updatePaymentDetails} = useStore();
@@ -24,7 +25,7 @@ export const PaymentDetails = (props) => {
   }, [billFilled])
 
   const handleValuesChange = (
-      changedValues: Partial<PaymentDetails>,
+      _: Partial<PaymentDetails>,
       allValues: PaymentDetails
     ) => {
       updatePaymentDetails(allValues);

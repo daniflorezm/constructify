@@ -1,0 +1,15 @@
+directories:
+  output: release
+  buildResources: assets
+appId: com.constructify.app
+productName: Constructify
+files:
+  - filter:
+      - dist/
+      - node_modules/
+      - package.json
+asar: false
+extraResources:
+  - from: node_modules/archiver-utils
+    to: node_modules/archiver-utils
+electronVersion: 34.2.0

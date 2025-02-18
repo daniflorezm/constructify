@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import "./BillList.scss";
 import {
   Typography,
@@ -190,6 +190,8 @@ export const BillList = () => {
     if (quarterSelected) {
       await deleteQuarterBill(quarterSelected.quarter);
       setOpenQuarterDeletionModal(false);
+      setQuarterSelected(null);
+      window.location.reload();
     }
   };
   const downloadQuarterBills = async (quarter: number) => {
@@ -352,10 +354,10 @@ export const BillList = () => {
       ...getColumnSearchProps("phone_number"),
     },
     {
-      title: "Fecha de creacion",
+      title: "Fecha de creación",
       dataIndex: "created_at",
       ...getColumnSearchProps("created_at"),
-    },
+    },    
     {
       title: "",
       dataIndex: "viewBill",
@@ -483,6 +485,7 @@ export const BillList = () => {
                     <Table<BillList>
                       columns={columns}
                       dataSource={firstQuarterBills}
+                      style={{ overflow: "auto" }}
                     />
                   ),
                 },
@@ -518,6 +521,7 @@ export const BillList = () => {
                     <Table<BillList>
                       columns={columns}
                       dataSource={secondQuarterBills}
+                      style={{ overflow: "auto" }}
                     />
                   ),
                 },
@@ -553,6 +557,7 @@ export const BillList = () => {
                     <Table<BillList>
                       columns={columns}
                       dataSource={thirdQuarterBills}
+                      style={{ overflow: "auto" }}
                     />
                   ),
                 },
@@ -588,6 +593,7 @@ export const BillList = () => {
                     <Table<BillList>
                       columns={columns}
                       dataSource={fourQuarterBills}
+                      style={{ overflow: "auto" }}
                     />
                   ),
                 },

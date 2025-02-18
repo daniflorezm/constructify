@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Table, Button, Input, Checkbox, InputNumber } from "antd";
 import { PlusOutlined, DeleteFilled } from "@ant-design/icons";
 import type { TableProps } from "antd";
@@ -114,7 +114,7 @@ export const ConceptDetails = (props: any) => {
     {
       dataIndex: "concept",
       title: "CONCEPTO",
-      render: (text: string, record: ConceptType, index: number) => (
+      render: (text: string, _: ConceptType, index: number) => (
         <Input
           value={text}
           onChange={(e) =>
@@ -126,7 +126,7 @@ export const ConceptDetails = (props: any) => {
     {
       dataIndex: "ml",
       title: "ML",
-      render: (text: number, record: ConceptType, index: number) => (
+      render: (text: number, _: ConceptType, index: number) => (
         <Input
           type="number"
           value={text}
@@ -139,7 +139,7 @@ export const ConceptDetails = (props: any) => {
     {
       title: "M2",
       dataIndex: "metro_cuadrado",
-      render: (text: number, record: ConceptType, index: number) => (
+      render: (text: number, _: ConceptType, index: number) => (
         <Input
           type="number"
           value={text}
@@ -152,7 +152,7 @@ export const ConceptDetails = (props: any) => {
     {
       title: "JORNALES",
       dataIndex: "jornales",
-      render: (text: number, record: ConceptType, index: number) => (
+      render: (text: number, _: ConceptType, index: number) => (
         <Input
           type="number"
           value={text}
@@ -165,7 +165,7 @@ export const ConceptDetails = (props: any) => {
     {
       title: "HORAS",
       dataIndex: "horas",
-      render: (text: number, record: ConceptType, index: number) => (
+      render: (text: number, _: ConceptType, index: number) => (
         <Input
           type="number"
           value={text}
@@ -178,7 +178,7 @@ export const ConceptDetails = (props: any) => {
     {
       title: "UND",
       dataIndex: "und",
-      render: (text: number, record: ConceptType, index: number) => (
+      render: (text: number, _: ConceptType, index: number) => (
         <Input
           type="number"
           value={text}
@@ -191,7 +191,7 @@ export const ConceptDetails = (props: any) => {
     {
       title: "VALOR X UND",
       dataIndex: "valor_por_unidad",
-      render: (text: number, record: ConceptType, index: number) => (
+      render: (text: number, _: ConceptType, index: number) => (
         <Input
           type="number"
           value={text}
@@ -203,7 +203,7 @@ export const ConceptDetails = (props: any) => {
     },
     {
       dataIndex: "remove",
-      render: (_, record: ConceptType, index: number) => (
+      render: (_, _record: ConceptType, index: number) => (
         <Button
           type="primary"
           danger
@@ -268,7 +268,7 @@ export const ConceptDetails = (props: any) => {
       <div className="concept-details-component-add-button">
         <Button type="primary" icon={<PlusOutlined />} onClick={addRow} />
       </div>
-      <Table columns={columns} dataSource={conceptData} />
+      <Table columns={columns} dataSource={conceptData} style={{ overflow: "auto" }} />
     </div>
   );
 };

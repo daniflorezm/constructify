@@ -1,21 +1,36 @@
 {
   "name": "constructify-express",
   "version": "1.0.0",
-  "main": "dist/app.js",
+  "main": "dist/main.js",
   "scripts": {
-    "build": "tsc",
-    "start": "node dist/app.js",
-    "dev": "ts-node-dev src/app.ts",
+    "build:express": "tsc && npm run copy:data && npm run copy:folders",
+
+    "copy:data": "copy data.db dist\\data.db",
+
+    "copy:folders": "node -e \"const fs = require('fs'); const path = require('path'); const folders = ['bills','exports-pdf','exports-png','exports-xlsx','exports-zip','knex','routes','xlsxtemplate']; folders.forEach(f => {const srcPath = path.join('src', f); const dstPath = path.join('dist', f); if(fs.existsSync(srcPath)){fs.cpSync(srcPath, dstPath, {recursive: true});}});\"",
+
+    "build:react": "cd ../constructify-react && npm install && npm run build",
+    "copy:react": "node -e \"const fs = require('fs'); const path = require('path'); const src = path.resolve('../constructify-react/dist'); const dest = path.resolve('dist/build'); fs.rmSync(dest, { recursive: true, force: true }); fs.cpSync(src, dest, { recursive: true });\"",
+
+    "build:electron": "electron-builder",
+
+    "build": "npm run build:express && npm run build:react && npm run copy:react && npm run build:electron",
+
+    "start:express": "node dist/app.js",
+    "start:electron": "electron .",
+    "start": "npm-run-all --parallel start:express start:electron",
+
+    "dev": "concurrently \"npm run dev:express\" \"npm run dev:react\" \"npm run start:electron\"",
+    "dev:express": "ts-node-dev src/app.ts",
+    "dev:react": "cd ../constructify-react && npm start",
+
     "migrate:latest": "knex migrate:latest --knexfile src/knex/knexdatabaseconfiguration.ts",
     "migrate:rollback": "knex migrate:rollback --knexfile src/knex/knexdatabaseconfiguration.ts",
     "migrate:create": "knex migrate:create --knexfile src/knex/knexdatabaseconfiguration.ts"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
   "dependencies": {
     "archiver": "^7.0.1",
+    "archiver-utils": "^2.1.0",
     "cors": "^2.8.5",
     "exceljs": "^4.4.0",
     "express": "^4.21.2",
@@ -29,8 +44,30 @@
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.0",
     "@types/node": "^22.10.2",
+    "electron": "^34.2.0",
+    "electron-builder": "^25.1.8",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.7.2"
+  },
+  "build": {
+    "appId": "com.constructify.app",
+    "productName": "Constructify",
+    "directories": {
+      "output": "release",
+      "buildResources": "assets"
+    },
+    "files": [
+      "dist/",
+      "node_modules/",
+      "package.json"
+    ],
+    "asar": false,
+    "extraResources": [
+      {
+        "from": "node_modules/archiver-utils",
+        "to": "node_modules/archiver-utils"
+      }
+    ]
   }
 }

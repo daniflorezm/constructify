@@ -10,6 +10,7 @@ export const getAllBills = async (
 ) => {
   try {
     const items = await knexdb("bills")
+      .orderBy("created_at", "desc")
       .select("*")
       .where("quarter", req.params.quarter);
     res.json(items);
@@ -82,13 +83,18 @@ export const getPng = async (req: express.Request, res: express.Response) => {
 export const getQuarterBills = async (
   req: express.Request,
   res: express.Response
-) : Promise<any> => {
+): Promise<any> => {
   try {
     const { quarter } = req.params;
-    const quarterBills = await knexdb("bills").select("*").where("quarter", quarter).whereNot("tag", "PLANTILLA");
+    const quarterBills = await knexdb("bills")
+      .select("*")
+      .where("quarter", quarter)
+      .whereNot("tag", "PLANTILLA");
 
     if (quarterBills.length === 0) {
-      return res.status(404).json({ error: "No hay facturas para este trimestre." });
+      return res
+        .status(404)
+        .json({ error: "No hay facturas para este trimestre." });
     }
 
     // 📌 Verificar si la carpeta 'exports-zip' existe, si no, crearla
@@ -106,8 +112,14 @@ export const getQuarterBills = async (
     archive.pipe(output);
 
     for (const bill of quarterBills) {
-      const pdfPath = path.join(__dirname, `../exports-pdf/factura_${bill.id}.pdf`);
-      const excelPath = path.join(__dirname, `../exports-xlsx/factura_${bill.id}.xlsx`);
+      const pdfPath = path.join(
+        __dirname,
+        `../exports-pdf/factura_${bill.id}.pdf`
+      );
+      const excelPath = path.join(
+        __dirname,
+        `../exports-xlsx/factura_${bill.id}.xlsx`
+      );
 
       if (fs.existsSync(pdfPath)) {
         archive.file(pdfPath, { name: `pdf/factura_${bill.id}.pdf` });
@@ -125,7 +137,9 @@ export const getQuarterBills = async (
       res.download(zipFilePath, zipFileName, (err) => {
         if (err) {
           console.error("Error al enviar el ZIP:", err);
-          return res.status(500).json({ error: "No se pudo enviar el archivo ZIP." });
+          return res
+            .status(500)
+            .json({ error: "No se pudo enviar el archivo ZIP." });
         }
 
         // Eliminar el archivo ZIP después de que se haya enviado
@@ -137,13 +151,16 @@ export const getQuarterBills = async (
 
     archive.on("error", (err) => {
       console.error("Error al generar ZIP:", err);
-      res.status(500).json({ error: "Error al generar ZIP", details: err.message });
+      res
+        .status(500)
+        .json({ error: "Error al generar ZIP", details: err.message });
     });
 
     archive.finalize(); // 🔹 Cierra correctamente el ZIP antes de enviarlo
-
   } catch (err) {
     console.error("Error general:", err);
-    res.status(500).json({ error: "Error en el servidor", details: (err as Error).message });
+    res
+      .status(500)
+      .json({ error: "Error en el servidor", details: (err as Error).message });
   }
 };

@@ -63,21 +63,21 @@ export const createBill = async (
       updated_at: new Date(),
     });
 
-    if (req.body.concepts && Array.isArray(req.body.concepts)) {
-      const conceptsData = req.body.concepts.map((concept: Concept) => ({
+    if (Array.isArray(concepts) && concepts.length > 0) {
+      const conceptsData = concepts.map((concept: Concept) => ({
         bill_id: newBillId,
-        concept: concept.concept,
+        concept: concept.concept || "",
         ml: concept.ml || 0,
         metro_cuadrado: concept.metro_cuadrado || 0,
         jornales: concept.jornales || 0,
         horas: concept.horas || 0,
         und: concept.und || "",
         valor_por_unidad: concept.valor_por_unidad || 0,
-        total: (concept.ml || 0) * (concept.valor_por_unidad || 0), // Calcular total
+        total: (concept.ml || 0) * (concept.valor_por_unidad || 0), 
         created_at: new Date(),
         updated_at: new Date(),
       }));
-
+    
       await knexdb("concepts").insert(conceptsData);
     }
 
@@ -339,7 +339,7 @@ export const createBill = async (
   } catch (err) {
     console.error(err);
     res.status(500).json({
-      error: "Error al crear la factura y exportarla a Excel",
+      error: "Error al crear la factura",
       details: (err as Error).message,
     });
   }

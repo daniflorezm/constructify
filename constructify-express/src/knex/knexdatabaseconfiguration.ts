@@ -1,7 +1,10 @@
 import path from 'path';
 import { Knex } from 'knex';
 
-const dbPath = path.resolve(__dirname, '..', '..', 'data.db');
+export const dbPath = path.resolve(__dirname, '..', 'data.db');
+
+console.log();
+
 
 
 const KnexDatabaseConfiguration: Knex.Config = {
