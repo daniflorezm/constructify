@@ -1,9 +1,14 @@
 import path from 'path';
 import { Knex } from 'knex';
+import { app } from "electron"; 
 
-export const dbPath = path.resolve(__dirname, '..', 'data.db');
+const isProd = app?.isPackaged ?? false;
 
-console.log();
+export const dbPath = isProd
+  ? path.join(process.resourcesPath, "app", "dist", "data.db") 
+  : path.resolve(__dirname, "..", "..", "data.db"); 
+
+console.log(`📂 Base de datos en uso: ${dbPath}`);
 
 
 
